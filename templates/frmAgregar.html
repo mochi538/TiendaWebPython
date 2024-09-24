@@ -1,0 +1,63 @@
+
+    {% extends "index.html" %}
+
+        {%block encabezado %}
+            {% include "encabezado.html"%}
+        {% endblock %}
+
+        {%block menu %}
+            {% include "menu.html"%}
+        {% endblock %}
+        
+        {%block contenido %}
+        <div class="container">
+        <h1 class=" text-center fw-bold">AGREGAR PRODUCTO</h1>
+        <div class="w-50", style="margin: 0 auto">
+            <form action="/agregar" method="post" enctype="multipart/form-data" class="was-validated" >
+                <div class="mt-2">
+                    <label for="txtCodigo" class="fw-bold">Código</label>
+                    <input type="text" name="txtCodigo" value="{{producto['codigo']}}" class="form-control" required>
+                </div>
+                <div class="mt-2">
+                    <label for="txtNombre" class="fw-bold">Nombre</label>
+                    <input type="text" name="txtNombre" value="{{producto['nombre']}}" class="form-control" required>
+                </div>
+                <div class="mt-2" >
+                    <label for="txtPrecio" class="fw-bold">Precio</label>
+                    <input type="number" name="txtPrecio" value="{{producto['precio']}}" class="form-control" required>
+                </div>
+                <div class="mt-2">
+                    <label for="txtCategoria" class="fw-bold">Categoria</label>
+                    <select name="txtCategoria" value="{{producto['categoria']}}" class="form-select" required>
+                        <option value="">Seleccione</option>
+                        <option value="Electrodomestico">Electrodoméstico</option>
+                        <option value="Ropa">Ropa</option>
+                        <option value="Calzado">Calzado</option>
+                    </select>
+                </div>
+                <div class="mt-2">
+                    <label for="fileFoto" class="fw-bold">Foto (jpg)</label>
+                    <input type="file" name="fileFoto" id="fileFoto" value="{{producto['foto']}}" class="form-control" accept=".jpg" onchange="visualizarFoto(this)" required>
+                </div>
+                <div class="mb-3 text-center">
+                    <img id="imagenProducto" src="" width="100" height="100">
+                </div>
+                
+                <div class="mt-2">
+                    <button class="btn btn-sencondary">Agregar</button>
+                    <a href="/listarProducto"><button type="button" class="btn btn-sencodary">Cancelar</button></a>
+                </div>
+            </form>
+            <script>
+                Swal.fire("Agregar Producto", '{{mensaje}}',"info")
+            </script>
+            {% endif %}
+        </div>
+    </div>
+        {% endblock %}
+        
+        
+        {% block piepagina %}
+            {% include "piePagina.html"%}
+        {% endblock %}
+        
