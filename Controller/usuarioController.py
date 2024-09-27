@@ -16,12 +16,10 @@ def login():
                 "username":username,
                 "password":password
             }
-            existeUser = usuarios.find_one(usuario)
-            if(existeUser):
             
-                session['user']=usuarios  
-                email = yagmail.SMTP("mariar53804@gmail.com", open(".password").read(),
-                                encoding='UTF-8')
+            if usuarios.find_one(usuario): 
+                session['user']=usuario  
+                email = yagmail.SMTP("mariar53804@gmail.com", open(".password").read(),encoding='UTF-8')
                 asunto="Reporte ingreso al sistema usuario"
                 mensaje = f"Te están hakeando muak"
                 
@@ -31,7 +29,7 @@ def login():
                 thread.start()
                 return redirect("/listarProducto")
             else:
-                mensaje="Credenciales de ingreso ivalidas"
+                mensaje="Credenciales de ingreso invalidas"
                 return render_template("frmLogin.html",mensaje=mensaje)
             
 @app.route("/salir")

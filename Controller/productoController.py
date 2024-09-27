@@ -5,38 +5,26 @@ import os
 import pymongo.errors
 from werkzeug.utils import secure_filename
 from bson.objectid import ObjectId
-import json
 
 
-def productoExiste(codigo):    
-    try:
-        consulta = {"codigo":codigo}    
-        producto = productos.find_one(consulta)
-        if(producto is not None):
-            return True
-        else:
-            return False        
-    except pymongo.errors as error:
-        print(error)
-        return False
-    
 
 
 @app.route("/listarProducto")
 def inicio():
-    if("user" in session):
+    if "user" in session:
+        mensaje=""
         try:
-            mensaje=""
             listaProductos = productos.find()
-            print(listaProductos)
+            return render_template("listarProducto.html", productos=listaProductos, mensaje=mensaje)
+        
         except pymongo.errors as error:
             mensaje=str(error)
-            listaProductos = []
+            return render_template("listarProducto.html", productos=listaProductos, mensaje=mensaje)
             
-        return render_template("listarProducto.html", productos=listaProductos, mensaje=mensaje)
-    else:
-        mensaje="Se requiere iniciar sesión"
-        return render_template("frmLogin.html", mensaje=mensaje)
+    mensaje="Se requiere iniciar sesión"
+    return render_template("frmLogin.html", mensaje=mensaje)
+    
+
     
 @app.route("/agregar", methods=['POST', 'GET'])
 def agregar():
@@ -82,6 +70,19 @@ def agregar():
         mensaje="Debe primero ingresar con sus credenciales"
         return render_template("frmLogin.html", mensaje=mensaje) 
        
+       
+def productoExiste(codigo):    
+    try:
+        consulta = {"codigo":codigo}    
+        producto = productos.find_one(consulta)
+        if(producto is not None):
+            return True
+        else:
+            return False        
+    except pymongo.errors as error:
+        print(error)
+        return False
+    
        
 @app.route("/consultar/<string:id>", methods=["GET"])
 def consultar(id):
@@ -166,7 +167,7 @@ def eliminar(id):
                 mensaje="Producto Eliminado"
                  
                 if nombreFoto != "":
-                    ruta= f'{app.config['UPLOAD_FOLDER']}/ {nombreFoto}'
+                    ruta= app.config['UPLOAD_FOLDER']+"/"+ nombreFoto
                     
                     if (os.path.exists(ruta)):
                         os.remove(ruta)
